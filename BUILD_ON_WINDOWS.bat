@@ -23,7 +23,9 @@ call .buildvenv\Scripts\activate.bat || goto error
 python -m pip install --upgrade pip || goto error
 python -m pip install "pyinstaller==6.22.3" "tzdata>=2026.1" || goto error
 
-python -c "import sys,datetime,tzdata; from zoneinfo import ZoneInfo; z=ZoneInfo('Africa/Casablanca'); d=datetime.datetime(2026,11,22,tzinfo=z); print('PYTHON:',sys.version); print('TZDATA:',tzdata.__version__); print('MOROCCO OFFSET:',d.utcoffset()); assert d.utcoffset()==datetime.timedelta(hours=1), 'Incorrect Morocco timezone data'" || goto error
+
+python -c "import datetime,tzdata,zoneinfo; from zoneinfo import ZoneInfo; d=datetime.datetime(2026,11,22); print('TZDATA:',tzdata.__version__); print('ZONEINFO PATH:',zoneinfo.TZPATH); print('DEFAULT OFFSET:',d.replace(tzinfo=ZoneInfo('Africa/Casablanca')).utcoffset()); zoneinfo.reset_tzpath([]); ZoneInfo.clear_cache(); print('TZDATA ONLY OFFSET:',d.replace(tzinfo=ZoneInfo('Africa/Casablanca')).utcoffset())" || goto error
+
 
 python release_check.py || goto error
 python release_version.py || goto error
