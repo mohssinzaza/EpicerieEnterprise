@@ -1,0 +1,60 @@
+
+name: Build Epicerie Enterprise Windows EXE
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-release:
+    runs-on: windows-2022
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+
+      - name: Build Windows program
+        shell: cmd
+        run: call BUILD_ON_WINDOWS.bat
+
+      - name: Check output files
+        shell: pwsh
+        run: |
+          $paths = @(
+            'dist/EpicerieEnterprise.exe',
+            'dist/EpicerieRecovery.exe',
+            'installer_output/EpicerieEnterprise_Setup.exe',
+            'installer_output/EpicerieEnterprise_Portable_Win10_x64.zip',
+            'installer_output/build_manifest.json',
+            'packaged_smoke_result.txt'
+          )
+          foreach ($path in $paths) {
+            if (!(Test-Path $path)) {
+              throw "Missing release file: $path"
+            }
+          }
+
+      - name: Upload Windows program
+        uses: actions/upload-artifact@v4
+        with:
+          name: EpicerieEnterprise-Windows10-x64
+          path: |
+            dist/EpicerieEnterprise.exe
+            dist/EpicerieRecovery.exe
+            installer_output/EpicerieEnterprise_Setup.exe
+            installer_output/EpicerieEnterprise_Portable_Win10_x64.zip
+            installer_output/build_manifest.json
+            packaged_smoke_result.txt
+            WINDOWS_ACCEPTANCE_AR.md
+          if-no-files-found: error
