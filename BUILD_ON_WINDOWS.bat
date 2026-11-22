@@ -21,7 +21,7 @@ if errorlevel 1 (
 %PYTHON_CMD% -m venv .buildvenv || goto error
 call .buildvenv\Scripts\activate.bat || goto error
 python -m pip install --upgrade pip || goto error
-python -m pip install "pyinstaller==6.16.0" "tzdata>=2026.1" || goto error
+python -m pip install "pyinstaller==6.22.3" "tzdata>=2026.1" || goto error
 python release_check.py || goto error
 python release_version.py || goto error
 python -m unittest discover -s tests -q || goto error
