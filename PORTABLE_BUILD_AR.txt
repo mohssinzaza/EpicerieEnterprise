@@ -1,0 +1,9 @@
+Épicerie Enterprise V88 — إنشاء نسخة محمولة لـ Windows 10 (64-bit)
+
+1. على حاسوب إعداد Windows فقط: ثبّت Python 3.10 أو أحدث مع الإنترنت.
+2. افتح BUILD_PORTABLE_ONLY_WINDOWS.bat. لا يلزم Inno Setup أو GitHub.
+3. بعد نجاح العملية انسخ installer_output\EpicerieEnterprise_Portable_Win10_x64.zip إلى حاسوب المحل.
+4. فك الضغط وشغّل START_EPICERIE.bat. لا يلزم Python على حاسوب المحل.
+5. اختبر البيع والباركود والطابعة والنسخ الاحتياطي والاسترجاع قبل اعتماد بيانات حقيقية.
+
+هذه الحزمة هي ملفات مصدر وليست ملف EXE جاهزاً؛ يجب بناؤها أولاً على Windows.
