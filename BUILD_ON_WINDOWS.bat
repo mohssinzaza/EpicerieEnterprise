@@ -6,7 +6,7 @@ if /i not "%PROCESSOR_ARCHITECTURE%"=="AMD64" if /i not "%PROCESSOR_ARCHITEW6432
  echo ERROR: Windows x64 required.
  exit /b 1
 )
-set "PYTHON_CMD=py -3"
+set "PYTHON_CMD=python"
 where py >nul 2>nul
 if errorlevel 1 (
  where python >nul 2>nul
