@@ -39,8 +39,19 @@ def test_portable_archive(archive, *, runner=subprocess.run):
             raise RuntimeError('Portable recovery self-test timed out') from exc
         except OSError as exc:
             raise RuntimeError('Portable recovery could not start') from exc
-        if recovery_result.returncode != 0 or not recovery_marker.is_file():
-            raise RuntimeError('Portable recovery executable self-test failed')
+       
+if recovery_result.returncode != 0 or not recovery_marker.is_file():
+    details = (
+        recovery_marker.read_text(encoding='utf-8', errors='replace')
+        if recovery_marker.is_file()
+        else 'Recovery result file was not created'
+    )
+    raise RuntimeError(
+        f'Portable recovery self-test failed. '
+        f'Exit code: {recovery_result.returncode}. '
+        f'Details: {details}'
+    )
+
         if not recovery_marker.read_text(encoding='utf-8').startswith('PASS:'):
             raise RuntimeError('Portable recovery executable did not pass self-test')
     return True
