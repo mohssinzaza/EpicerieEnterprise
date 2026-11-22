@@ -24,6 +24,24 @@ jobs:
         shell: pwsh
         run: choco install innosetup --yes --no-progress
 
+      
+      - name: Check Morocco timezone data
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade tzdata
+          @'
+          import datetime
+          import tzdata
+          from zoneinfo import ZoneInfo
+
+          zone = ZoneInfo("Africa/Casablanca")
+          day = datetime.datetime(
+              2026, 11, 22, tzinfo=zone
+          )
+          print("tzdata version:", tzdata.__version__)
+          print("Morocco offset:", day.utcoffset())
+          '@ | python -
+
       - name: Build Windows program
         shell: cmd
         run: call BUILD_ON_WINDOWS.bat
