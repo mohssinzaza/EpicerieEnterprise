@@ -31,7 +31,7 @@ def movements(store):
     )
     for name,query,sign in sources:
         items.extend(Movement(name,ident,when,sign*value) for ident,when,value in db.execute(query,(start,)))
-    items.sort(key=lambda x:(x.occurred_at,x.source,x.reference))
+    items.sort(key=lambda x:(x.occurred_at, 0 if x.source == "opening" else 1, x.source, x.reference))
     if sum(item.amount_cents for item in items)!=current.expected_cents:
         raise ValueError('Cash movements do not reconcile with snapshot')
     return tuple(items)
