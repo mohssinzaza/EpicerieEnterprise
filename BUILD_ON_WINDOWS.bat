@@ -1,5 +1,6 @@
 @echo off
 setlocal EnableExtensions
+set "PYTHONUTF8=1"
 cd /d "%~dp0"
 echo EPICERIE ENTERPRISE V95 - WINDOWS 10 x64 INSTALLER
 if /i not "%PROCESSOR_ARCHITECTURE%"=="AMD64" if /i not "%PROCESSOR_ARCHITEW6432%"=="AMD64" (
@@ -24,7 +25,7 @@ python -m pip install --upgrade pip || goto error
 python -m pip install "pyinstaller==6.22.3" "tzdata>=2026.1" || goto error
 
 
-python -c "import datetime,tzdata; from zoneinfo import ZoneInfo; d=datetime.datetime(2026,11,22,tzinfo=ZoneInfo('Africa/Casablanca')); print('TZDATA:',tzdata.__version__,'MOROCCO OFFSET:',d.utcoffset())" || goto error
+python -c "import datetime,tzdata,zoneinfo; from zoneinfo import ZoneInfo; d=datetime.datetime(2026,11,22); print('TZDATA:',tzdata.__version__); print('ZONEINFO PATH:',zoneinfo.TZPATH); print('DEFAULT OFFSET:',d.replace(tzinfo=ZoneInfo('Africa/Casablanca')).utcoffset()); zoneinfo.reset_tzpath([]); ZoneInfo.clear_cache(); print('TZDATA ONLY OFFSET:',d.replace(tzinfo=ZoneInfo('Africa/Casablanca')).utcoffset())" || goto error
 
 
 python release_check.py || goto error
